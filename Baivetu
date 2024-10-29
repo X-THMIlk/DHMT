@@ -96,13 +96,13 @@ ProgramId;
 
 mat4  model_mat_cpp;
 int model_mat_location;
+float Alpha= 0.0f;
 
 mat4 view_mat_cpp; //Ma trận view
 
 // Biến truyền dữ liệu cho uniform
 int view_mat_location;
-
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 string ReadShaderSourceFile(string fileName) {
 	fstream reader(fileName.c_str());
 	string line;
@@ -176,7 +176,7 @@ void CloseFunc()
 }
 // ------------------------------------------
 // Hàm vẽ mặt bàn
-void matban()
+void noctu()
 {
 	//Khai báo và khởi tạo ma trận là ma trận đơn vị
 	mat4 instance = identity_mat4();
@@ -192,13 +192,13 @@ void matban()
 
 }
 // ------------------------------------------
-void mtu(float x, float z)
+void mtu(float x,float z, float Alpha)
 {
 	//Khai báo và khởi tạo ma trận là ma trận đơn vị
 	mat4 instance = identity_mat4();
 
-	//Tạo kích thước rộng (theo trục x) 1.2, sâu (theo trục z) 0.6, dày (theo trục y) 0.04 từ hình hộp đơn vị và di chuyển đến vị trí
-	instance = model_mat_cpp * translate(vec3(x, 0.0, z)) * scale(vec3(0.5, 1.0, 0.05));
+	//Tạo kích thước rộng (theo trục x) 0.5, sâu (theo trục z) 0.05, dày (theo trục y) 0.04 từ hình hộp đơn vị và di chuyển đến vị trí
+	instance = model_mat_cpp * translate(vec3(x, 0.0, z)) * scale(vec3(0.5, 1.0, 0.04)) * rotate_y(Alpha);
 
 	//Tính ma trận biến đổi và truyền xuống shader
 	glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, instance.m);
@@ -208,14 +208,13 @@ void mtu(float x, float z)
 
 }
 //Hàm vẽ chân bàn
-void chanban()
+void chantu()
 {
 	//Khai báo và khởi tạo ma trận là ma trận đơn vị
 	mat4 instance = identity_mat4();
 
 	//Tạo kích thước rộng (theo trục x) 0.06, cao (theo trục y) 0.8, dày (theo trục z) 0.06 từ hình hộp đơn vị
-	instance = model_mat_cpp * scale(vec3(0.06, 0.4, 0.045));
-
+	instance = model_mat_cpp * translate(vec3(0.0, 0.0, 0.0))* scale(vec3(0.06, 0.8, 0.06));
 	//Tính ma trận biến đổi và truyền xuống shader
 	glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, instance.m);
 
@@ -235,8 +234,6 @@ void DisplayFunc(void)
 	view_mat_cpp = lookat(eye, at, up);
 	view_mat_location = glGetUniformLocation(ProgramId, "view_mat_shader");
 	glUniformMatrix4fv(view_mat_location, 1, GL_FALSE, view_mat_cpp.m);
-
-
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -244,28 +241,20 @@ void DisplayFunc(void)
 	model_mat_location = glGetUniformLocation(ProgramId, "model_mat_shader");
 
 	model_mat_cpp = identity_mat4();
-
-	//Mặt bàn
-	matban();
-	mtu(-0.3f, 0.3f);
-	mtu(0.3f, 0.3f);
-
+	mtu(-0.3f,0.3f,-Alpha);
+	mtu(0.3f,0.3f,Alpha);
 	//Chân trước trái
 	model_mat_cpp = translate(vec3(-0.57, -0.42, 0.28));
-	chanban();
-
+	chantu();
 	//Chân trước phải
 	model_mat_cpp = translate(vec3(0.57, -0.42, 0.28));
-	chanban();
-
+	chantu();
 	//Chân sau trái
 	model_mat_cpp = translate(vec3(-0.57, -0.42, -0.28));
-	chanban();
-
-	//Chân sau phải
+	chantu();
+    //Chân sau phải
 	model_mat_cpp = translate(vec3(0.57, -0.42, -0.28));
-	chanban();
-
+	chantu();
 	glutSwapBuffers();
 }
 // ---------------------------------------------------------------------------
@@ -275,21 +264,39 @@ void ReshapeFunc(int Width, int Height)
 	CurrentHeight = Height;
 }
 // ---------------------------------------------------------------------------
-void IdleFunc(void)
+void IdleFunc()
 {
+	// thiết lập cờ gọi hiển thị lại
+	// tính toán góc quay
+
 	// thiết lập cờ gọi hiển thị lại
 	glutPostRedisplay();
 }
 // ---------------------------------------------------------------------------
 void KeyboardFunc(unsigned char key, int x, int y)
 {
-	switch (key) {
-	case 27:
-		exit(EXIT_SUCCESS); break;
+	{
+		switch (key) {
+		case 27:
+			exit(EXIT_SUCCESS); break;
+		}
 	}
 }
-// ------------------------------------------
+void MouseFunc(int button, int state, int x, int y)
+{
 
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+		Alpha += 5.0;
+		if (Alpha > 360.0) { Alpha -= 360.0; }
+	}
+
+	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
+		Alpha -= 5.0;
+		if (Alpha < 0.0) { Alpha += 360.0; }
+	}
+
+	glutPostRedisplay();
+}
 // ---------------------------------------------------------------------------
 int main(int argc, char* argv[])
 {
@@ -312,6 +319,7 @@ int main(int argc, char* argv[])
 	glutReshapeFunc(ReshapeFunc);
 	glutIdleFunc(IdleFunc);
 	glutKeyboardFunc(KeyboardFunc);
+	glutMouseFunc(MouseFunc);
 	glutCloseFunc(CloseFunc);
 
 	glutMainLoop();
