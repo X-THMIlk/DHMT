@@ -26,58 +26,58 @@ typedef struct
 Vertex Vertices[] =
 {
 	// v0-v1-v2 (front)
-	{ { 0.5f, 0.5f, 0.5f, 1.0f },{ 0.4f, 0.5f, 0.6f, 1.0f } },
-	{ { -0.5f, 0.5f, 0.5f, 1.0f },{ 0.4f, 0.5f, 0.6f, 1.0f } },
-	{ { -0.5f, -0.5f, 0.5f, 1.0f },{0.4f, 0.5f, 0.6f, 1.0f} },
+	{ { 0.5f,	 0.5f,	0.5f,	1.0f },{ 1.0f,	0.0f,	0.0f,	1.0f } },
+	{ { -0.5f,	 0.5f,	0.5f,	1.0f },{ 1.0f,	0.0f,	0.0f,	1.0f } },
+	{ { -0.5f,	-0.5f,	0.5f,	1.0f },{ 1.0f,	0.0f,	0.0f,	1.0f } },
 	// v2-v3-v0
-	{ { -0.5f, -0.5f, 0.5f, 1.0f },{0.4f, 0.5f, 0.6f, 1.0f } },
-	{ { 0.5f, -0.5f, 0.5f, 1.0f },{0.4f, 0.5f, 0.6f, 1.0f } },
-	{ { 0.5f, 0.5f, 0.5f, 1.0f },{0.4f, 0.5f, 0.6f, 1.0f } },
+	{ { -0.5f,	-0.5f,	0.5f,	1.0f },{ 1.0f,	0.0f,	0.0f,	1.0f } },
+	{ { 0.5f,	-0.5f,	0.5f,	1.0f },{ 1.0f,	0.0f,	0.0f,	1.0f } },
+	{ { 0.5f,	 0.5f,	0.5f,	1.0f },{ 1.0f,	0.0f,	0.0f,	1.0f } },
 
 	// v0-v3-v4 (right)
-	{ { 0.5f, 0.5f, 0.5f, 1.0f },{ 0.0f, 1.0f, 0.0f, 1.0f } },
-	{ { 0.5f, -0.5f,   0.5f, 1.0f },{ 0.0f, 1.0f, 0.0f, 1.0f } },
-	{ { 0.5f, -0.5f,  -0.5f, 1.0f },{ 0.0f, 1.0f, 0.0f, 1.0f } },
+	{ { 0.5f,	 0.5f,	 0.5f,	1.0f },{ 0.0f,	1.0f,	0.0f,	1.0f } },
+	{ { 0.5f,	-0.5f,   0.5f,	1.0f },{ 0.0f,	1.0f,	0.0f,	1.0f } },
+	{ { 0.5f,	-0.5f,  -0.5f,	1.0f },{ 0.0f,	1.0f,	0.0f,	1.0f } },
 	// v4-v5-v0
-	{ { 0.5f, -0.5f, -0.5f, 1.0f },{ 0.0f, 1.0f, 0.0f, 1.0f } },
-	{ { 0.5f, 0.5f, -0.5f, 1.0f },{ 0.0f, 1.0f, 0.0f, 1.0f } },
-	{ { 0.5f, 0.5f,   0.5f, 1.0f },{ 0.0f, 1.0f, 0.0f, 1.0f } },
+	{ { 0.5f,	-0.5f,	-0.5f,	1.0f },{ 0.0f,	1.0f,	0.0f,	1.0f } },
+	{ { 0.5f,	 0.5f,	-0.5f,	1.0f },{ 0.0f,	1.0f,	0.0f,	1.0f } },
+	{ { 0.5f,	 0.5f,   0.5f,	1.0f },{ 0.0f,	1.0f,	0.0f,	1.0f } },
 
 	// v0-v5-v6 (top)
-	{ { 0.5f, 0.5f, 0.5f, 1.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
-	{ { 0.5f, 0.5f, -0.5f, 1.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
-	{ { -0.5f, 0.5f, -0.5f, 1.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
+	{ { 0.5f,	 0.5f,	 0.5f,	1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
+	{ { 0.5f,	0.5f,	-0.5f,	1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
+	{ { -0.5f,	0.5f,	 -0.5f,	1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
 	// v6-v1-v0
-	{ { -0.5f, 0.5f, -0.5f, 1.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
-	{ { -0.5f, 0.5f, 0.5f, 1.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
-	{ { 0.5f, 0.5f, 0.5f, 1.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
+	{ { -0.5f,	 0.5f,	 -0.5f,	1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
+	{ { -0.5f,	0.5f,	0.5f,	1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
+	{ { 0.5f,	0.5f,	 0.5f,	1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
 
 	// v1-v6-v7 (left)
-	{ { -0.5f, 0.5f, 0.5f, 1.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
-	{ { -0.5f, 0.5f, -0.5f, 1.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
-	{ { -0.5f, -0.5f, -0.5f, 1.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
+	{ { -0.5f,	 0.5f,	 0.5f,	1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
+	{ { -0.5f,	0.5f,	-0.5f,	1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
+	{ { -0.5f,	-0.5f,	 -0.5f,	1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
 	// v7-v2-v1
-	{ { -0.5f, -0.5f, -0.5f, 1.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
-	{ { -0.5f, -0.5f, 0.5f, 1.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
-	{ { -0.5f, 0.5f, 0.5f, 1.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
+	{ { -0.5f,	 -0.5f,	 -0.5f,	1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
+	{ { -0.5f,	-0.5f,	0.5f,	1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
+	{ { -0.5f,	0.5f,	 0.5f,	1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
 
 	// v7-v4-v3 (bottom)
-	{ { -0.5f, -0.5f, -0.5f, 1.0f },{ 0.1f, 0.2f, 0.3f, 1.0f } },
-	{ { 0.5f, -0.5f, -0.5f, 1.0f },{ 0.1f, 0.2f, 0.3f, 1.0f } },
-	{ { 0.5f, -0.5f, 0.5f, 1.0f },{ 0.1f, 0.2f, 0.3f, 1.0f } },
+	{ { -0.5f,	 -0.5f,	 -0.5f,	1.0f },{ 0.1f,	0.2f,	0.3f,	1.0f } },
+	{ { 0.5f,	-0.5f,	-0.5f,	1.0f },{ 0.1f,	0.2f,	0.3f,	1.0f } },
+	{ { 0.5f,	-0.5f,	 0.5f,	1.0f },{ 0.1f,	0.2f,	0.3f,	1.0f } },
 	// v3-v2-v7
-	{ { 0.5f, -0.5f, 0.5f, 1.0f },{ 0.1f, 0.2f, 0.3f, 1.0f } },
-	{ { -0.5f, -0.5f, 0.5f, 1.0f },{ 0.1f, 0.2f, 0.3f, 1.0f } },
-	{ { -0.5f, -0.5f, -0.5f, 1.0f },{ 0.1f, 0.2f, 0.3f, 1.0f } },
+	{ { 0.5f,	 -0.5f,	 0.5f,	1.0f },{ 0.1f,	0.2f,	0.3f,	1.0f } },
+	{ { -0.5f,	-0.5f,	0.5f,	1.0f },{ 0.1f,	0.2f,	0.3f,	1.0f } },
+	{ { -0.5f,	-0.5f,	 -0.5f,	1.0f },{ 0.1f,	0.2f,	0.3f,	1.0f } },
 
 	// v4-v7-v6 (back)
-	{ { 0.5f, -0.5f, -0.5f, 1.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
-	{ { -0.5f, -0.5f, -0.5f, 1.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
-	{ { -0.5f, 0.5f, -0.5f, 1.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
+	{ { 0.5f,	 -0.5f,	 -0.5f,	1.0f },{ 0.4f,	0.5f,	0.6f,	1.0f } },
+	{ { -0.5f,	-0.5f,	-0.5f,	1.0f },{ 0.4f,	0.5f,	0.6f,	1.0f } },
+	{ { -0.5f,	0.5f,	 -0.5f,	1.0f },{ 0.4f,	0.5f,	0.6f,	1.0f } },
 	// v6-v5-v4
-	{ { -0.5f, 0.5f, -0.5f, 1.0f },{ 0.4f, 0.5f, 0.6f, 1.0f } },
-	{ { 0.5f, 0.5f, -0.5f, 1.0f },{ 0.4f, 0.5f, 0.6f, 1.0f } },
-	{ { 0.5f, -0.5f, -0.5f, 1.0f },{ 0.4f, 0.5f, 0.6f, 1.0f } }
+	{ { -0.5f,	 0.5f,	 -0.5f,	1.0f },{ 0.4f,	0.5f,	0.6f,	1.0f } },
+	{ { 0.5f,	0.5f,	 -0.5f,	1.0f },{ 0.4f,	0.5f,	0.6f,	1.0f } },
+	{ { 0.5f,	-0.5f,	 -0.5f,	1.0f },{ 0.4f,	0.5f,	0.6f,	1.0f } }
 };
 
 const size_t BufferSize = sizeof(Vertices);
@@ -96,13 +96,17 @@ ProgramId;
 
 mat4  model_mat_cpp;
 int model_mat_location;
-float Alpha= 0.0f;
 
-mat4 view_mat_cpp; //Ma trận view
+mat4 view_mat_cpp;			//Ma trận view	
 
 // Biến truyền dữ liệu cho uniform
-int view_mat_location;
-// --------------------------------------------------------------------------
+int	view_mat_location;
+
+enum { CanhTrai = 0, CanhPhai = 1, NumAngles = 2 };
+int Axis = CanhTrai;
+float Theta[NumAngles] = { 0.0 };
+
+// ---------------------------------------------------------------------------	
 string ReadShaderSourceFile(string fileName) {
 	fstream reader(fileName.c_str());
 	string line;
@@ -113,7 +117,7 @@ string ReadShaderSourceFile(string fileName) {
 	reader.close();
 	return code;
 }
-// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------	
 void CreatVaoVbo()
 {
 	glGenVertexArrays(1, &VaoId);
@@ -129,7 +133,7 @@ void CreatVaoVbo()
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 }
-// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------	
 void CreatShaders()
 {
 	string vertexSrc = ReadShaderSourceFile("./vs.shader");
@@ -152,7 +156,7 @@ void CreatShaders()
 	glLinkProgram(ProgramId);
 	glUseProgram(ProgramId);
 }
-// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------	
 void CloseFunc()
 {
 	glUseProgram(0);
@@ -175,16 +179,16 @@ void CloseFunc()
 	glDeleteVertexArrays(1, &VaoId);
 }
 // ------------------------------------------
-// Hàm vẽ mặt bàn
-void noctu()
+// Hàm vẽ mặt tu
+void mattu()
 {
 	//Khai báo và khởi tạo ma trận là ma trận đơn vị
 	mat4 instance = identity_mat4();
 
 	//Tạo kích thước rộng (theo trục x) 1.2, sâu (theo trục z) 0.6, dày (theo trục y) 0.04 từ hình hộp đơn vị và di chuyển đến vị trí
-	instance = model_mat_cpp * scale(vec3(1.2, 1.0, 0.6));
+	instance = model_mat_cpp * scale(vec3(1, 0.05, 0.6));
 
-	//Tính ma trận biến đổi và truyền xuống shader
+	//Tính ma trận biến đổi và truyền xuống shader		
 	glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, instance.m);
 
 	//Vẽ
@@ -192,29 +196,16 @@ void noctu()
 
 }
 // ------------------------------------------
-void mtu(float x,float z, float Alpha)
-{
-	//Khai báo và khởi tạo ma trận là ma trận đơn vị
-	mat4 instance = identity_mat4();
 
-	//Tạo kích thước rộng (theo trục x) 0.5, sâu (theo trục z) 0.05, dày (theo trục y) 0.04 từ hình hộp đơn vị và di chuyển đến vị trí
-	instance = model_mat_cpp * translate(vec3(x, 0.0, z)) * scale(vec3(0.5, 1.0, 0.04)) * rotate_y(Alpha);
-
-	//Tính ma trận biến đổi và truyền xuống shader
-	glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, instance.m);
-
-	//Vẽ
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-
-}
-//Hàm vẽ chân bàn
-void chantu()
+//Hàm vẽ than tu
+void thantu()
 {
 	//Khai báo và khởi tạo ma trận là ma trận đơn vị
 	mat4 instance = identity_mat4();
 
 	//Tạo kích thước rộng (theo trục x) 0.06, cao (theo trục y) 0.8, dày (theo trục z) 0.06 từ hình hộp đơn vị
-	instance = model_mat_cpp * translate(vec3(0.0, 0.0, 0.0))* scale(vec3(0.06, 0.8, 0.06));
+	instance = model_mat_cpp * scale(vec3(1, 1, 0.1));
+
 	//Tính ma trận biến đổi và truyền xuống shader
 	glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, instance.m);
 
@@ -222,18 +213,50 @@ void chantu()
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
+void CanhTu()
+{
+	//Khai báo và khởi tạo ma trận là ma trận đơn vị
+	mat4 instance = identity_mat4();
 
-// ---------------------------------------------------------------------------
+	//Tạo kích thước rộng (theo trục x) 0.06, cao (theo trục y) 0.8, dày (theo trục z) 0.06 từ hình hộp đơn vị
+	instance = model_mat_cpp * scale(vec3(0.5, 1, 0.1));
+
+	//Tính ma trận biến đổi và truyền xuống shader
+	glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, instance.m);
+
+	//Vẽ chân bàn
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+void TuTrai()
+{
+	//Khai báo và khởi tạo ma trận là ma trận đơn vị
+	mat4 instance = identity_mat4();
+
+	//Tạo kích thước rộng (theo trục x) 0.06, cao (theo trục y) 0.8, dày (theo trục z) 0.06 từ hình hộp đơn vị
+	instance = model_mat_cpp * scale(vec3(0.05, 1.05, 0.6));
+
+	//Tính ma trận biến đổi và truyền xuống shader
+	glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, instance.m);
+
+	//Vẽ chân bàn
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// ---------------------------------------------------------------------------	
 void DisplayFunc(void)
 {
 	// Các tham số của hàm lookat
-	vec3 eye(-0.1f, -0.1f, -0.2f),
+	vec3	eye(-0.1f, -0.1f, 0.2f),
+		//eye(0.0f,0.0f,0.0f),
 		at(0.0f, 0.0f, 0.0f),
 		up(0.0f, 1.0f, 0.0f);
 
 	view_mat_cpp = lookat(eye, at, up);
 	view_mat_location = glGetUniformLocation(ProgramId, "view_mat_shader");
 	glUniformMatrix4fv(view_mat_location, 1, GL_FALSE, view_mat_cpp.m);
+
+
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -241,63 +264,78 @@ void DisplayFunc(void)
 	model_mat_location = glGetUniformLocation(ProgramId, "model_mat_shader");
 
 	model_mat_cpp = identity_mat4();
-	mtu(-0.3f,0.3f,-Alpha);
-	mtu(0.3f,0.3f,Alpha);
-	//Chân trước trái
-	model_mat_cpp = translate(vec3(-0.57, -0.42, 0.28));
-	chantu();
-	//Chân trước phải
-	model_mat_cpp = translate(vec3(0.57, -0.42, 0.28));
-	chantu();
-	//Chân sau trái
-	model_mat_cpp = translate(vec3(-0.57, -0.42, -0.28));
-	chantu();
-    //Chân sau phải
-	model_mat_cpp = translate(vec3(0.57, -0.42, -0.28));
-	chantu();
+
+	//Canh trai	
+	
+	model_mat_cpp = translate(vec3(-0.25, 0, 0))*rotate_y(Theta[CanhTrai])* translate(vec3(0.25, 0, 0));
+	//glTranslatef(0.5, 0, 0);
+	CanhTu();
+
+	//Canh phai		
+	model_mat_cpp = translate(vec3(0.51, 0, 0)) * rotate_y(Theta[CanhPhai]);
+	CanhTu();
+
+	//Than tu tren
+	model_mat_cpp = translate(vec3(0.25, 0, 0.5));
+	thantu();
+
+	//Mat tu tren
+	model_mat_cpp = translate(vec3(0.25, 0.5, 0.25));
+	mattu();
+
+	//Tu Trai
+	model_mat_cpp = translate(vec3(0.75, 0, 0.25));
+	TuTrai();
+
+	//Than tu duoi
+	model_mat_cpp = translate(vec3(0.25, -0.5, 0.25));
+	mattu();
+
+	//Tu Phai
+	model_mat_cpp = translate(vec3(-0.25, 0, 0.25));
+	TuTrai();
+
 	glutSwapBuffers();
 }
-// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------	
 void ReshapeFunc(int Width, int Height)
 {
 	CurrentWidth = Width;
 	CurrentHeight = Height;
 }
-// ---------------------------------------------------------------------------
-void IdleFunc()
+// ---------------------------------------------------------------------------	
+void IdleFunc(void)
 {
-	// thiết lập cờ gọi hiển thị lại
-	// tính toán góc quay
-
 	// thiết lập cờ gọi hiển thị lại
 	glutPostRedisplay();
 }
 // ---------------------------------------------------------------------------
 void KeyboardFunc(unsigned char key, int x, int y)
 {
-	{
-		switch (key) {
-		case 27:
-			exit(EXIT_SUCCESS); break;
-		}
+	switch (key) {
+	case 27:
+		exit(EXIT_SUCCESS); break;
 	}
 }
+// ------------------------------------------
+
+// ---------------------------------------------------------------------------
+
 void MouseFunc(int button, int state, int x, int y)
 {
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-		Alpha += 5.0;
-		if (Alpha > 360.0) { Alpha -= 360.0; }
+		Theta[Axis] += 5.0;
+		if (Theta[Axis] > 360.0) { Theta[Axis] -= 360.0; }
 	}
 
 	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
-		Alpha -= 5.0;
-		if (Alpha < 0.0) { Alpha += 360.0; }
+		Theta[Axis] -= 5.0;
+		if (Theta[Axis] < 0.0) { Theta[Axis] += 360.0; }
 	}
 
 	glutPostRedisplay();
 }
-// ---------------------------------------------------------------------------
 int main(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
@@ -307,7 +345,7 @@ int main(int argc, char* argv[])
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 	glutInitWindowSize(CurrentWidth, CurrentHeight);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutCreateWindow("Table");
+	glutCreateWindow("Robot Arm");
 
 	glewExperimental = GL_TRUE;
 	glewInit();
