@@ -1,0 +1,221 @@
+#include <GL/glut.h>
+#include <cmath>
+
+// Thay đổi góc camera
+float cameraAngleX = 0.0f;
+float cameraAngleY = 0.0f;
+float distance = 10.0f;
+
+// Hàm khởi tạo
+void init() {
+    glEnable(GL_DEPTH_TEST);
+}
+
+// Hàm vẽ mặt sàn
+void drawFloor() {
+    glBegin(GL_QUADS);
+    glColor3f(0.4f, 0.3f, 0.2f);
+    glVertex3f(-10.0f, 0.0f, -10.0f);
+    glVertex3f(10.0f, 0.0f, -10.0f);
+    glVertex3f(10.0f, 0.0f, 10.0f);
+    glVertex3f(-10.0f, 0.0f, 10.0f);
+    glEnd();
+}
+
+// Hàm vẽ các bức tường
+void drawWall(float x, float y, float width, float height) {
+    glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f); // Màu tường
+    glVertex3f(x - width / 2, y, -5.0f);
+    glVertex3f(x + width / 2, y, -5.0f);
+    glVertex3f(x + width / 2, y + height, -5.0f);
+    glVertex3f(x - width / 2, y + height, -5.0f);
+    glEnd();
+}
+
+// Hàm vẽ bàn
+void drawTable(float x, float z) {
+    glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f); // Màu gỗ
+    glVertex3f(x - 1.0f, 1.0f, z - 1.0f);
+    glVertex3f(x + 1.0f, 1.0f, z - 1.0f);
+    glVertex3f(x + 1.0f, 1.0f, z + 1.0f);
+    glVertex3f(x - 1.0f, 1.0f, z + 1.0f);
+    glEnd();
+
+    // Chân bàn
+    glBegin(GL_QUADS);
+    glColor3f(0.7f, 0.7f, 0.7f); // Màu chân bàn
+    glVertex3f(x - 1.0f - 0.1f, 0.0f, z - 1.0f - 0.1f);
+    glVertex3f(x - 1.0f - 0.1f, 0.6f, z - 1.0f - 0.1f);
+    glVertex3f(x - 1.0f + 0.1f, 0.6f, z - 1.0f - 0.1f);
+    glVertex3f(x - 1.0f + 0.1f, 0.0f, z - 1.0f - 0.1f);
+    glVertex3f(x + 1.0f - 0.1f, 0.0f, z - 1.0f - 0.1f);
+    glVertex3f(x + 1.0f - 0.1f, 0.6f, z - 1.0f - 0.1f);
+    glVertex3f(x + 1.0f + 0.1f, 0.6f, z - 1.0f - 0.1f);
+    glVertex3f(x + 1.0f + 0.1f, 0.0f, z - 1.0f - 0.1f);
+    glVertex3f(x - 1.0f - 0.1f, 0.0f, z + 1.0f + 0.1f);
+    glVertex3f(x - 1.0f - 0.1f, 0.6f, z + 1.0f + 0.1f);
+    glVertex3f(x - 1.0f + 0.1f, 0.6f, z + 1.0f + 0.1f);
+    glVertex3f(x - 1.0f + 0.1f, 0.0f, z + 1.0f + 0.1f);
+    glVertex3f(x + 1.0f - 0.1f, 0.0f, z + 1.0f + 0.1f);
+    glVertex3f(x + 1.0f - 0.1f, 0.6f, z + 1.0f + 0.1f);
+    glVertex3f(x + 1.0f + 0.1f, 0.6f, z + 1.0f + 0.1f);
+    glVertex3f(x + 1.0f + 0.1f, 0.0f, z + 1.0f + 0.1f);
+    glEnd();
+}
+
+// Hàm vẽ ghế
+void drawChair(float x, float z) {
+    glBegin(GL_QUADS);
+    glColor3f(0.5f, 0.23f, 0.45f);
+    glVertex3f(x - 0.5f, 0.5f, z - 0.5f);
+    glVertex3f(x + 0.5f, 0.5f, z - 0.5f);
+    glVertex3f(x + 0.5f, 0.5f, z + 0.5f);
+    glVertex3f(x - 0.5f, 0.5f, z + 0.5f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3f(0.7f, 0.7f, 0.7f);
+    glVertex3f(x - 0.5f - 0.1f, 0.0f, z - 0.5f - 0.1f);
+    glVertex3f(x - 0.5f - 0.1f, 0.5f, z - 0.5f - 0.1f);
+    glVertex3f(x - 0.5f + 0.1f, 0.5f, z - 0.5f - 0.1f);
+    glVertex3f(x - 0.5f + 0.1f, 0.0f, z - 0.5f - 0.1f);
+    glVertex3f(x + 0.5f - 0.1f, 0.0f, z - 0.5f - 0.1f);
+    glVertex3f(x + 0.5f - 0.1f, 0.5f, z - 0.5f - 0.1f);
+    glVertex3f(x + 0.5f + 0.1f, 0.5f, z - 0.5f - 0.1f);
+    glVertex3f(x + 0.5f + 0.1f, 0.0f, z - 0.5f - 0.1f);
+    glVertex3f(x - 0.5f - 0.1f, 0.0f, z + 0.5f + 0.1f);
+    glVertex3f(x - 0.5f - 0.1f, 0.5f, z + 0.5f + 0.1f);
+    glVertex3f(x - 0.5f + 0.1f, 0.5f, z + 0.5f + 0.1f);
+    glVertex3f(x - 0.5f + 0.1f, 0.0f, z + 0.5f + 0.1f);
+    glVertex3f(x + 0.5f - 0.1f, 0.0f, z + 0.5f + 0.1f);
+    glVertex3f(x + 0.5f - 0.1f, 0.5f, z + 0.5f + 0.1f);
+    glVertex3f(x + 0.5f + 0.1f, 0.5f, z + 0.5f + 0.1f);
+    glVertex3f(x + 0.5f + 0.1f, 0.0f, z + 0.5f + 0.1f);
+    glEnd();
+}
+
+// Hàm vẽ TV
+void drawTV(float x, float z) {
+    glBegin(GL_QUADS);
+    glColor3f(0.0f, 0.0f, 0.0f); // Màu đen cho màn hình
+    glVertex3f(x - 1.0f, 1.5f, z - 0.5f);
+    glVertex3f(x + 1.0f, 1.5f, z - 0.5f);
+    glVertex3f(x + 1.0f, 1.5f, z + 0.5f);
+    glVertex3f(x - 1.0f, 1.5f, z + 0.5f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3f(0.2f, 0.5f, 0.3f); // Màu xám
+    glVertex3f(x - 1.1f, 1.45f, z - 0.6f);
+    glVertex3f(x + 1.1f, 1.45f, z - 0.6f);
+    glVertex3f(x + 1.1f, 1.45f, z + 0.6f);
+    glVertex3f(x - 1.1f, 1.45f, z + 0.6f);
+    glEnd();
+}
+
+// Hàm vẽ máy tính
+void drawComputer(float x, float z) {
+    glBegin(GL_QUADS);
+    glColor3f(0.8f, 0.6f, 0.2f); // Màu đen cho màn hình
+    glVertex3f(x - 0.5f, 1.5f, z - 0.5f);
+    glVertex3f(x + 0.5f, 1.5f, z - 0.5f);
+    glVertex3f(x + 0.5f, 1.5f, z + 0.5f);
+    glVertex3f(x - 0.5f, 1.5f, z + 0.5f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3f(0.3f, 0.1f, 0.9f); // Màu xám cho bàn phím
+    glVertex3f(x - 0.7f, 0.5f, z - 0.5f);
+    glVertex3f(x + 0.7f, 0.5f, z - 0.5f);
+    glVertex3f(x + 0.7f, 0.5f, z - 0.7f);
+    glVertex3f(x - 0.7f, 0.5f, z - 0.7f);
+    glEnd();
+}
+
+// Hàm vẽ cảnh
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+
+    // Đặt vị trí camera
+    gluLookAt(distance * sin(cameraAngleY) * cos(cameraAngleX),
+        distance * sin(cameraAngleX),
+        distance * cos(cameraAngleY) * cos(cameraAngleX),
+        0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f);
+
+    drawFloor();
+
+    // Vẽ các bức tường
+    drawWall(0.0f, 1.5f, 20.0f, 3.0f); // Bức tường phía trước
+    drawWall(0.0f, 1.5f, 20.0f, 3.0f); // Bức tường phía sau
+    drawWall(-10.0f, 1.5f, 20.0f, 3.0f); // Bức tường bên trái
+    drawWall(10.0f, 1.5f, 20.0f, 3.0f); // Bức tường bên phải
+
+    // Vẽ bàn, ghế, TV và máy tính tại các vị trí khác nhau
+    drawTable(0.0f, 0.0f);
+    drawChair(-1.5f, 1.5f);
+    drawChair(1.5f, 1.5f);
+    drawTV(3.0f, -1.5f); // TV bên phải
+    drawComputer(-3.0f, -1.5f); // Máy tính bên trái
+
+    glutSwapBuffers();
+}
+
+// Hàm quản lý đầu vào
+void keyboard(unsigned char key, int x, int y) {
+    switch (key) {
+    case 'w':
+        cameraAngleX += 0.1f;
+        break;
+    case 's':
+        cameraAngleX -= 0.1f;
+        break;
+    case 'a':
+        cameraAngleY -= 0.1f;
+        break;
+    case 'd':
+        cameraAngleY += 0.1f;
+        break;
+    case '+': // Phóng to
+        distance -= 0.5f; // Giảm khoảng cách camera
+        if (distance < 1.0f) distance = 1.0f; // Giới hạn khoảng cách
+        break;
+    case '-': // Thu nhỏ
+        distance += 0.5f; // Tăng khoảng cách camera
+        break;
+    case 27:
+        exit(0);
+        break;
+    default:
+        break;
+    }
+    glutPostRedisplay();
+}
+
+// Hàm thiết lập chế độ chiếu
+void reshape(int w, int h) {
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45.0, (float)w / (float)h, 1.0, 100.0);
+    glMatrixMode(GL_MODELVIEW);
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("OpenGL Room with Zoom");
+
+    init();
+
+    glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
+    glutKeyboardFunc(keyboard);
+    glutMainLoop();
+
+    return 0;
+}
