@@ -1,0 +1,455 @@
+vs.shader
+#version 460
+layout(location = 0) in vec4 vertex_position;
+layout(location = 1) in vec4 vertex_color;
+layout(location = 2) in vec4 vertex_normal;
+uniform mat4 projection_mat_shader;
+uniform mat4 view_mat_shader;
+uniform mat4 model_mat_shader;
+out vec3 position_eye;
+out vec3 normal_eye;
+out vec4 fragment_color;
+void main(void)
+{
+position_eye = vec3(view_mat_shader * model_mat_shader * vertex_position);
+normal_eye = vec3(view_mat_shader * model_mat_shader * vertex_normal);
+gl_Position = projection_mat_shader * vec4(position_eye, 1.0);
+fragment_color = vertex_color;
+}
+
+fs.shader
+#version 460
+in vec3
+position_eye,
+normal_eye;
+uniform mat4 view_mat_shader;
+in vec4 fragment_color;
+out vec4 out_color;
+void main() {
+//-----------chỉ định các vị trí-------------
+// vị trí nguồn sáng trong thế giới
+vec3 light_position_world = vec3(0.0, 0.0, 2.0);
+// biến đổi vị trí nguồn sáng sang eye space
+vec3 light_position_eye = vec3(view_mat_shader * vec4(light_position_world, 1.0));
+
+// vị trí viewer
+vec3 postion_viewer = vec3(0.0, 0.0, 0.0);
+// chuẩn hóa normal_eye
+vec3 n_eye = normalize(normal_eye);
+// tính vector khoảng cách từ nguồn sáng đến mắt
+// hướng vector hướng từ vertex đến nguồn sáng
+// = vị trí Light - vị trí Vertex
+vec3 distance_to_light_eye = light_position_eye - position_eye;
+// chuẩn hóa vector khoảng cách từ nguồn sáng đến mắt
+vec3 direction_to_light_eye = normalize(distance_to_light_eye);
+// tính vector khoảng cách vị trí viewer và vertex
+// = vị trí viewer - vị trí vertex
+vec3 surface_to_viewer_eye = postion_viewer - position_eye;
+// chuẩn hóa
+surface_to_viewer_eye = normalize(surface_to_viewer_eye);
+// --------------cường độ ánh sáng khuếch tán-----------------------
+// tính cosin góc giữa vector hướng ánh sáng và vector pháp tuyến: l.n
+float dot_prod = dot(direction_to_light_eye, n_eye);
+// lấy giá trị &gt;=0 để loại bỏ giá trị âm ứng với góc &gt;90 độ
+dot_prod = max(dot_prod, 0.0);
+// cường độ ánh sáng đến
+// màu trắng mờ
+vec3 Ld = vec3(0.7, 0.7, 0.7);
+// hệ số phản xạ khuếch tán
+// màu cam
+vec3 Kd = vec3(1.0, 0.5, 0.0);
+// cường độ ánh sáng khuếch tán cuối cùng
+vec3 Id = Ld * Kd * dot_prod;
+// -----------------cường độ ánh sáng phản xạ-------------------
+// blinn
+// tính vector half way
+vec3 half_way_eye = surface_to_viewer_eye + direction_to_light_eye;
+// chuẩn hóa vector half way
+half_way_eye = normalize(half_way_eye);
+// tính cosin góc giữa vector half_way_eye và vector pháp tuyến: n.h
+float dot_prod_specular = dot(half_way_eye, n_eye);
+// lấy giá trị &gt;=0 để loại bỏ giá trị âm ứng với góc &gt;90 độ
+dot_prod_specular = max(dot_prod_specular, 0.0);
+
+// hệ số sáng bóng
+float specular_exponent = 100.0;
+// tính mũ với hệ số sáng bóng
+float specular_factor = pow(dot_prod_specular, specular_exponent);
+// ánh sáng phản xạ
+// màu trắng
+vec3 Ls = vec3(1.0, 1.0, 1.0);
+// hệ số phản xạ
+// phản xạ toàn phần, màu trắng
+vec3 Ks = vec3(1.0, 1.0, 1.0);
+// cường độ ánh sáng phản xạ cuối cùng
+vec3 Is = Ls * Ks * specular_factor;
+// --------------cường độ ánh sáng môi trường---------------
+// ánh sáng môi trường
+// màu xám
+vec3 La = vec3(0.2, 0.2, 0.2);
+// hệ số môi trường
+// phản chiếu hoàn toàn
+vec3 Ka = vec3(1.0, 1.0, 1.0);
+// cường độ ánh sáng môi trường cuối cùng
+vec3 Ia = La * Ka;
+// ------------mau cuoi cung------------
+//out_color = fragment_color;
+//out_color = vec4(Is + Id + Ia, 1.0);
+out_color = vec4(Is + Id + Ia, 1.0) * fragment_color;
+}
+
+main.cpp
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;assert.h&gt;
+#include &lt;GL/glew.h&gt;
+#include &lt;GL/freeglut.h&gt;
+#include &lt;Vector_Matrix.h&gt;
+
+using namespace std;
+typedef struct
+{
+float xyzw[4];
+float rgba[4];
+float normal[4];
+} Vertex;
+// v6----- v5
+// /| /|
+// v1------v0|
+// | | | |
+// | |v7---|-|v4
+// |/ |/
+// v2------v3
+// Mảng dữ liệu
+Vertex Vertices[] =
+{
+// v0-v1-v2 (front)
+{ { 0.5f, 0.5f, 0.5f, 1.0 },{ 1.0f, 1.0f, 1.0f, 1.0f },{ 0, 0, 1, 0 } },
+{ { -0.5f, 0.5f, 0.5f, 1.0 },{ 0.0f, 1.0f, 0.0f, 1.0f },{ 0, 0, 1, 0 } },
+{ { -0.5f, -0.5f, 0.5f, 1.0 },{ 1.0f, 0.0f, 1.0f, 1.0f },{ 0, 0, 1, 0 } },
+// v2-v3-v0
+{ { -0.5f, -0.5f, 0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0, 0, 1, 0 } },
+{ { 0.5f, -0.5f, 0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0, 0, 1, 0 } },
+{ { 0.5f, 0.5f, 0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0, 0, 1, 0 } },
+// v0-v3-v4 (right)
+{ { 0.5f, 0.5f, 0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 1, 0, 0, 0 } },
+{ { 0.5f, -0.5f, 0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 1, 0, 0, 0 } },
+{ { 0.5f, -0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 1, 0, 0, 0 } },
+// v4-v5-v0
+{ { 0.5f, -0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 1, 0, 0, 0 } },
+{ { 0.5f, 0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 1, 0, 0, 0 } },
+{ { 0.5f, 0.5f, 0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 1, 0, 0, 0 } },
+// v0-v5-v6 (top)
+{ { 0.5f, 0.5f, 0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0, 1, 0, 0 } },
+{ { 0.5f, 0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0, 1, 0, 0 } },
+{ { -0.5f, 0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0, 1, 0, 0 } },
+// v6-v1-v0
+{ { -0.5f, 0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0, 1, 0, 0 } },
+{ { -0.5f, 0.5f, 0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0, 1, 0, 0 } },
+{ { 0.5f, 0.5f, 0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0, 1, 0, 0 } },
+// v1-v6-v7 (left)
+
+{ { -0.5f, 0.5f, 0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ -1, 0, 0, 0 } },
+{ { -0.5f, 0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ -1, 0, 0, 0 } },
+{ { -0.5f, -0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ -1, 0, 0, 0 } },
+// v7-v2-v1
+{ { -0.5f, -0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ -1, 0, 0, 0 } },
+{ { -0.5f, -0.5f, 0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ -1, 0, 0, 0 } },
+{ { -0.5f, 0.5f, 0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ -1, 0, 0, 0 } },
+// v7-v4-v3 (bottom)
+{ { -0.5f, -0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0,-1, 0, 0 } },
+{ { 0.5f, -0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0,-1, 0, 0 } },
+{ { 0.5f, -0.5f, 0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0,-1, 0, 0 } },
+// v3-v2-v7
+{ { 0.5f, -0.5f, 0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0,-1, 0, 0 } },
+{ { -0.5f, -0.5f, 0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0,-1, 0, 0 } },
+{ { -0.5f, -0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0,-1, 0, 0 } },
+// v4-v7-v6 (back)
+{ { 0.5f, -0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0, 0,-1, 0 } },
+{ { -0.5f, -0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0, 0,-1, 0 } },
+{ { -0.5f, 0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0, 0,-1, 0 } },
+// v6-v5-v4
+{ { -0.5f, 0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0, 0,-1, 0 } },
+{ { 0.5f, 0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0, 0,-1, 0 } },
+{ { 0.5f, -0.5f, -0.5f, 1.0 },{ 1.0f, 0.0f, 0.0f, 1.0f },{ 0, 0,-1, 0 } }
+};
+// ----------------------------------------
+const size_t BufferSize = sizeof(Vertices);
+const size_t VertexSize = sizeof(Vertices[0]);
+const size_t RgbOffset = sizeof(Vertices[0].xyzw);
+const size_t NormalOffset = sizeof(Vertices[0].xyzw) + sizeof(Vertices[1].rgba);
+int CurrentWidth = 700,
+CurrentHeight = 700;
+GLuint
+VaoId,
+VboId,
+VertexShaderId,
+FragmentShaderId,
+ProgramId;
+mat4
+model_mat_cpp,
+view_mat_cpp,
+projection_mat_cpp;
+int
+model_mat_location,
+view_mat_location,
+projection_mat_location;
+float
+r[] = { 0.0f, 0.0f, 0.0f },
+s[] = { 1.0f, 1.0f, 1.0f },
+t[] = { 0.0f, 0.0f, 0.0f };
+bool
+translated = false,
+rotated = false,
+scaled = false;
+// ------------------------------------------
+string ReadShaderSourceFile(string fileName) {
+fstream reader(fileName.c_str());
+string line;
+string code = &quot;&quot;;
+while (getline(reader, line)) {
+code += line + &quot;\n&quot;;
+}
+reader.close();
+return code;
+}
+// ------------------------------------------
+void CreatVaoVbo()
+{
+glGenVertexArrays(1, &amp;VaoId);
+glBindVertexArray(VaoId);
+glGenBuffers(1, &amp;VboId);
+glBindBuffer(GL_ARRAY_BUFFER, VboId);
+glBufferData(GL_ARRAY_BUFFER, BufferSize, Vertices, GL_STATIC_DRAW);
+glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, VertexSize, 0); // position
+glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, VertexSize, (GLvoid*)RgbOffset); //color
+glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, VertexSize, (GLvoid*)NormalOffset); //normal
+glEnableVertexAttribArray(0);
+glEnableVertexAttribArray(1);
+glEnableVertexAttribArray(2);
+}
+// ------------------------------------------
+void CreatShaders()
+{
+
+string vertexSrc = ReadShaderSourceFile(&quot;./vs.shader&quot;);
+string fragmentSrc = ReadShaderSourceFile(&quot;./fs.shader&quot;);
+const GLchar* VertexShader = vertexSrc.c_str();
+const GLchar* FragmentShader = fragmentSrc.c_str();
+VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
+glShaderSource(VertexShaderId, 1, &amp;VertexShader, NULL);
+glCompileShader(VertexShaderId);
+FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+glShaderSource(FragmentShaderId, 1, &amp;FragmentShader, NULL);
+glCompileShader(FragmentShaderId);
+ProgramId = glCreateProgram();
+glAttachShader(ProgramId, VertexShaderId);
+glAttachShader(ProgramId, FragmentShaderId);
+glLinkProgram(ProgramId);
+glUseProgram(ProgramId);
+}
+// ------------------------------------------
+void CloseFunc()
+{
+glUseProgram(0);
+glDetachShader(ProgramId, VertexShaderId);
+glDetachShader(ProgramId, FragmentShaderId);
+glDeleteShader(FragmentShaderId);
+glDeleteShader(VertexShaderId);
+glDeleteProgram(ProgramId);
+glDisableVertexAttribArray(2);
+glDisableVertexAttribArray(1);
+glDisableVertexAttribArray(0);
+glBindBuffer(GL_ARRAY_BUFFER, 0);
+glDeleteBuffers(1, &amp;VboId);
+glBindVertexArray(0);
+glDeleteVertexArrays(1, &amp;VaoId);
+}
+// ------------------------------------------
+void DisplayFunc(void)
+{
+model_mat_cpp = identity_mat4();
+
+model_mat_location = glGetUniformLocation(ProgramId, &quot;model_mat_shader&quot;);
+glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_mat_cpp.m);
+if (translated)
+{
+model_mat_cpp = model_mat_cpp * translate(vec3(t[0], t[1], t[2]));
+glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_mat_cpp.m);
+}
+if (rotated)
+{
+model_mat_cpp = model_mat_cpp * rotate_x(r[0])
+* rotate_y(r[1])
+* rotate_z(r[2]);
+glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_mat_cpp.m);
+}
+if (scaled)
+{
+model_mat_cpp = model_mat_cpp * scale(vec3(s[0], s[1], s[2]));
+glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_mat_cpp.m);
+}
+vec3 eye(0.0f, 0.0f, 2.0f),
+at(0.0f, 0.0f, 0.0f),
+up(0.0f, 1.0f, 0.0f);
+view_mat_cpp = lookat(eye, at, up);
+view_mat_location = glGetUniformLocation(ProgramId, &quot;view_mat_shader&quot;);
+glUniformMatrix4fv(view_mat_location, 1, GL_FALSE, view_mat_cpp.m);
+float
+znear = 0.1f,
+zfar = 100.0f,
+fov = 90.0f,
+aspect = (float)CurrentWidth / CurrentHeight;
+projection_mat_cpp = perspective(fov, aspect, znear, zfar);
+projection_mat_location = glGetUniformLocation(ProgramId, &quot;projection_mat_shader&quot;);
+glUniformMatrix4fv(projection_mat_location, 1, GL_FALSE, projection_mat_cpp.m);
+glEnable(GL_DEPTH_TEST);
+glDepthFunc(GL_LESS);
+glClearColor(0.0, 0.0, 0.0, 0.0);
+glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+glDrawArrays(GL_TRIANGLES, 0, 36);
+glutSwapBuffers();
+}
+// ------------------------------------------
+void ReshapeFunc(int Width, int Height)
+
+{
+CurrentWidth = Width;
+CurrentHeight = Height;
+glViewport(0, 0, CurrentWidth, CurrentHeight);
+}
+// ------------------------------------------
+void IdleFunc(void)
+{
+glutPostRedisplay();
+}
+// ------------------------------------------
+void KeyboardFunc(unsigned char key, int x, int y)
+{
+switch (key) {
+case 27:
+glutLeaveMainLoop();
+break;
+case &#39;x&#39;:
+r[0] -= 10.0f;
+rotated = true;
+break;
+case &#39;X&#39;:
+r[0] += 10.0f;
+rotated = true;
+break;
+case &#39;y&#39;:
+r[1] -= 10.0f;
+rotated = true;
+break;
+case &#39;Y&#39;:
+r[1] += 10.0f;
+rotated = true;
+break;
+case &#39;z&#39;:
+r[2] -= 10.0f;
+rotated = true;
+break;
+case &#39;Z&#39;:
+r[2] += 10.0f;
+rotated = true;
+break;
+case &#39;=&#39;:
+case &#39;+&#39;:
+s[0] *= 1.05f;
+
+s[1] *= 1.05f;
+s[2] *= 1.05f;
+scaled = true;
+break;
+case &#39;-&#39;:
+case &#39;_&#39;:
+s[0] /= 1.05f;
+s[1] /= 1.05f;
+s[2] /= 1.05f;
+scaled = true;
+break;
+case &#39;j&#39;:
+t[0] -= 0.05f;
+translated = true;
+break;
+case &#39;l&#39;:
+t[0] += 0.05f;
+translated = true;
+break;
+case &#39;i&#39;:
+t[1] += 0.05f;
+translated = true;
+break;
+case &#39;,&#39;:
+t[1] -= 0.05f;
+translated = true;
+break;
+case &#39;g&#39;:
+t[2] -= 0.05f;
+translated = true;
+break;
+case &#39;h&#39;:
+t[2] += 0.05f;
+translated = true;
+break;
+}
+}
+// ----------------------------------------
+// Xử lý phím đặc biệt
+void SpecialFunc(int key, int x, int y)
+{
+switch (key)
+{
+case GLUT_KEY_LEFT:
+t[0] -= 0.05f;
+translated = true;
+break;
+case GLUT_KEY_RIGHT:
+t[0] += 0.05f;
+translated = true;
+break;
+case GLUT_KEY_UP:
+t[1] += 0.05f;
+translated = true;
+break;
+case GLUT_KEY_DOWN:
+t[1] -= 0.05f;
+translated = true;
+break;
+case GLUT_KEY_ALT_R:
+t[2] -= 0.05f;
+translated = true;
+break;
+case GLUT_KEY_CTRL_R:
+t[2] += 0.05f;
+translated = true;
+break;
+}
+}
+// ------------------------------------------
+int main(int argc, char* argv[])
+{
+glutInit(&amp;argc, argv);
+glutInitContextVersion(4, 0);
+glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
+glutInitContextProfile(GLUT_CORE_PROFILE);
+glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
+glutInitWindowSize(CurrentWidth, CurrentHeight);
+glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+glutCreateWindow(&quot;Blinn&quot;);
+glewExperimental = GL_TRUE;
+glewInit();
+CreatVaoVbo();
+CreatShaders();
+glutDisplayFunc(DisplayFunc);
+glutReshapeFunc(ReshapeFunc);
+glutIdleFunc(IdleFunc);
+glutKeyboardFunc(KeyboardFunc);
+glutSpecialFunc(SpecialFunc);
+
+glutCloseFunc(CloseFunc);
+glutMainLoop();
+return 0;
+}
