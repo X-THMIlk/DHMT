@@ -416,10 +416,10 @@ void setInt(const string& name, int value) {
 void cube()
 {
 	mvstack.push(model_mat_cpp);
-		mat4 instance = identity_mat4();
-		mat4 model_cube = model_mat_cpp * instance;
-		glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_cube.m);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+	mat4 instance = identity_mat4();
+	mat4 model_cube = model_mat_cpp * instance;
+	glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_cube.m);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
 	model_mat_cpp = mvstack.pop();
 }
 //-------------------------------
@@ -431,30 +431,30 @@ float projector_direction = 1.0f;
 //projector
 void projector(float tmp) {
 	mvstack.push(model_mat_cpp);
-		//foot projector
-		mvstack.push(model_mat_cpp);
-			setInt("color", 2);
-			model_mat_cpp = model_mat_cpp * translate(vec3(0.0, 4.25, 0.0)) * scale(vec3(1.0, 0.5, 1.0));
-			cube();
-		model_mat_cpp = mvstack.pop();
-		//leg projector
-		mvstack.push(model_mat_cpp);
-			setInt("color", 11);
-			model_mat_cpp = model_mat_cpp * translate(vec3(0.0, 2.25, 0.0)) * scale(vec3(0.5, 3.5, 0.5));
-			cube();
-		model_mat_cpp = mvstack.pop();
-		//body projector
-		mvstack.push(model_mat_cpp);
-			setInt("color", 12);
-			model_mat_cpp = model_mat_cpp * rotate_y(tmp) * scale(vec3(1.5, 1.0, 1.5));
-			cube();
-		model_mat_cpp = mvstack.pop();
-		//eye projector
-		mvstack.push(model_mat_cpp);
-			setInt("color", 98);
-			model_mat_cpp = model_mat_cpp * rotate_y(tmp) * translate(vec3(-0.45, 0.0, -0.8)) * scale(vec3(0.5, 0.5, 0.1));
-			cube();
-		model_mat_cpp = mvstack.pop();
+	//foot projector
+	mvstack.push(model_mat_cpp);
+	setInt("color", 2);
+	model_mat_cpp = model_mat_cpp * translate(vec3(0.0, 4.25, 0.0)) * scale(vec3(1.0, 0.5, 1.0));
+	cube();
+	model_mat_cpp = mvstack.pop();
+	//leg projector
+	mvstack.push(model_mat_cpp);
+	setInt("color", 11);
+	model_mat_cpp = model_mat_cpp * translate(vec3(0.0, 2.25, 0.0)) * scale(vec3(0.5, 3.5, 0.5));
+	cube();
+	model_mat_cpp = mvstack.pop();
+	//body projector
+	mvstack.push(model_mat_cpp);
+	setInt("color", 12);
+	model_mat_cpp = model_mat_cpp * rotate_y(tmp) * scale(vec3(1.5, 1.0, 1.5));
+	cube();
+	model_mat_cpp = mvstack.pop();
+	//eye projector
+	mvstack.push(model_mat_cpp);
+	setInt("color", 98);
+	model_mat_cpp = model_mat_cpp * rotate_y(tmp) * translate(vec3(-0.45, 0.0, -0.8)) * scale(vec3(0.5, 0.5, 0.1));
+	cube();
+	model_mat_cpp = mvstack.pop();
 	model_mat_cpp = mvstack.pop();
 }
 void projectors(float tx, float ty, float tz, float sx, float sy, float sz, float tmp) {
@@ -482,153 +482,6 @@ const float amplitude = 1.0f; // Biên độ
 const float frequency = 0.02f; // Tần số dao động
 float animation_la_x = 0;
 bool _switch_la = false;
-namespace tree {
-	void lacay() {
-		setInt("color", 5);
-		mvstack.push(model_mat_cpp);
-		cube();
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * rotate_x(45) * rotate_y(45) * rotate_z(45);
-		cube();
-		model_mat_cpp = mvstack.pop();
-		model_mat_cpp = mvstack.pop();
-	}
-	void canhcay() {
-		setInt("color", 1);
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * scale(vec3(0.2, 2.0, 0.2));
-		cube();
-		model_mat_cpp = mvstack.pop();
-	}
-	void nhanh1() {
-		mvstack.push(model_mat_cpp);
-		//cánh phải 1
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0, 2, 0)) * rotate_z(30) * translate(vec3(0, 1, 0));
-		tree::canhcay();
-
-		model_mat_cpp = mvstack.pop();
-		//cánh phải 1-1
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(-1, 3.75, 0)) * rotate_z(-30) * translate(vec3(0, 1, 0));
-		tree::canhcay();
-
-		model_mat_cpp = mvstack.pop();
-		//lá cây 1-1
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0.25, 5.5, 0)) * translate(vec3(animation_la_x, 0, 0));
-		tree::lacay();
-
-		model_mat_cpp = mvstack.pop();
-		//cánh phải 1-2
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(-1, 3.75, 0)) * rotate_z(60) * translate(vec3(0, 1, 0));
-		tree::canhcay();
-
-		model_mat_cpp = mvstack.pop();
-		//lá cây 1-2
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(-3, 5, 0)) * translate(vec3(animation_la_x, 0, 0));
-		tree::lacay();
-
-		model_mat_cpp = mvstack.pop();
-		model_mat_cpp = mvstack.pop();
-	}
-	void nhanh2() {
-		mvstack.push(model_mat_cpp);
-		//cánh trái 2
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0, 2, 0)) * rotate_z(-60) * translate(vec3(0, 1, 0));
-		tree::canhcay();
-
-		model_mat_cpp = mvstack.pop();
-		//cánh trái 2.1
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(1.75, 3, 0)) * rotate_z(-75) * translate(vec3(0, 1, 0));
-		tree::canhcay();
-
-		model_mat_cpp = mvstack.pop();
-		//lá trái 2.1
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(3.75, 3.75, 0)) * translate(vec3(animation_la_x, 0, 0));
-		tree::lacay();
-
-		model_mat_cpp = mvstack.pop();
-		//cánh trái 2.2
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(1.75, 3, 0)) * rotate_z(-30) * translate(vec3(0, 1, 0));
-		tree::canhcay();
-
-		model_mat_cpp = mvstack.pop();
-		//cánh trái 2.2.1
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(2.75, 4.75, 0)) * rotate_z(-60) * translate(vec3(0, 1, 0));
-		tree::canhcay();
-
-		model_mat_cpp = mvstack.pop();
-		//lá trái 2.2.1
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(4.5, 5.75, 0)) * translate(vec3(animation_la_x, 0, 0));
-		tree::lacay();
-
-		model_mat_cpp = mvstack.pop();
-		//cánh trái 2.2.2
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(2.75, 4.75, 0)) * rotate_z(30) * translate(vec3(0, 1, 0));
-		tree::canhcay();
-
-		model_mat_cpp = mvstack.pop();
-		//lá trái 2.2.2
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(animation_la_x, 0, 0));
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(2, 6.75, 0)) * scale(vec3(2, 2, 2));
-		tree::lacay();
-
-		model_mat_cpp = mvstack.pop();
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(2, 6.75, 1.5)) * scale(vec3(0.5, 0.5, 0.5));
-		tree::lacay();
-
-		model_mat_cpp = mvstack.pop();
-		model_mat_cpp = mvstack.pop();
-		model_mat_cpp = mvstack.pop();
-	}
-	void draw_tree()
-	{
-		mvstack.push(model_mat_cpp);
-		//gốc cây
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0, 1.0, 0));
-		tree::canhcay();
-
-		model_mat_cpp = mvstack.pop();
-
-		tree::nhanh1();
-
-		tree::nhanh2();
-
-		//nhanh 3 nho o duoi
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * rotate_y(60) * scale(vec3(0.5, 0.5, 0.5));
-		tree::nhanh1();
-
-		model_mat_cpp = mvstack.pop();
-		//nhanh 4 o tren
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * rotate_y(95) * scale(vec3(0.5, 0.5, 0.5));
-		tree::nhanh2();
-
-		model_mat_cpp = mvstack.pop();
-		model_mat_cpp = mvstack.pop();
-	}
-}
-void tree_real(GLfloat tx = 0, GLfloat ty = 0, GLfloat tz = 0, GLfloat sx = 0.2, GLfloat sy = 0.2, GLfloat sz = 0.2) {
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(tx, ty, tz)) * scale(vec3(sx, sy, sz));
-	tree::draw_tree();
-	model_mat_cpp = mvstack.pop();
-}
 #pragma endregion
 //--------------ve phong hoc------------
 #pragma region room and door
@@ -819,7 +672,7 @@ namespace fan {
 	void fan_blade_x()
 	{
 		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0, 0, 0)) 
+		model_mat_cpp = model_mat_cpp * translate(vec3(0, 0, 0))
 			* scale(vec3(2.0f, 0.1f, 0.6f)) * rotate_x(30);
 		setInt("color", 16);
 		cube();
@@ -829,7 +682,7 @@ namespace fan {
 	{
 		mvstack.push(model_mat_cpp);
 		setInt("color", 16);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0, 0, 0)) 
+		model_mat_cpp = model_mat_cpp * translate(vec3(0, 0, 0))
 			* scale(vec3(0.6f, 0.1f, 2.0f)) * rotate_z(30);
 		cube();
 
@@ -839,7 +692,7 @@ namespace fan {
 	{
 		mvstack.push(model_mat_cpp);
 		setInt("color", 16);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0, 0, 0)) 
+		model_mat_cpp = model_mat_cpp * translate(vec3(0, 0, 0))
 			* scale(vec3(0.8f, 0.2f, 0.8f));
 		cube();
 		model_mat_cpp = mvstack.pop();
@@ -855,7 +708,7 @@ namespace fan {
 		model_mat_cpp = mvstack.pop();
 		//Downrod tru quat
 		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0, -0.9, 0)) 
+		model_mat_cpp = model_mat_cpp * translate(vec3(0, -0.9, 0))
 			* scale(vec3(0.2f, 1.4f, 0.2f));
 		setInt("color", 6);
 		cube();
@@ -867,25 +720,25 @@ namespace fan {
 		model_mat_cpp = mvstack.pop();
 		//fan blade 1
 		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * rotate_y(Alpha) 
+		model_mat_cpp = model_mat_cpp * rotate_y(Alpha)
 			* translate(vec3(1.4, -1.7, 0));
 		fan::fan_blade_x();
 		model_mat_cpp = mvstack.pop();
 		//fan blade 2
 		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * rotate_y(Alpha) 
+		model_mat_cpp = model_mat_cpp * rotate_y(Alpha)
 			* translate(vec3(-1.4, -1.7, 0));
 		fan::fan_blade_x();
 		model_mat_cpp = mvstack.pop();
 		//fan blade 3
 		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * rotate_y(Alpha) 
+		model_mat_cpp = model_mat_cpp * rotate_y(Alpha)
 			* translate(vec3(0, -1.7, 1.4));
 		fan::fan_blade_z();
 		model_mat_cpp = mvstack.pop();
 		//fan blade 4
 		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * rotate_y(Alpha) 
+		model_mat_cpp = model_mat_cpp * rotate_y(Alpha)
 			* translate(vec3(0, -1.7, -1.4));
 		fan::fan_blade_z();
 		model_mat_cpp = mvstack.pop();
@@ -893,207 +746,6 @@ namespace fan {
 	}//}}
 }
 #pragma endregion
-//--------ve diu hoa---------
-#pragma region air conditioner
-//conditioner size= (2,3,8.4) 
-float angle_conditioner = -50.0f;
-void conditioner()
-{
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * scale(vec3(0.2, 0.2, 0.2));//giam size di 1/4 
-	//hộp to
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * scale(vec3(2, 2.7, 8.4));
-	setInt("color", 98);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//hộp nhỏ
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(-0.2, -1.5, 0)) * scale(vec3(1.6, 0.3, 8.4));
-	setInt("color", 98);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//canh ben trai
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0, -0.15, 4.2)) * scale(vec3(2, 3, 0.01));
-	setInt("color", 2);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//canh ben phai
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0, -0.15, -4.2)) * scale(vec3(2, 3, 0.01));
-	setInt("color", 2);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//cua
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0.6, -1.65, 0)) * rotate_z(angle_conditioner);
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0, 0.25, 0)) * scale(vec3(0.01, 0.5, 8.4));
-	setInt("color", 2);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	model_mat_cpp = mvstack.pop();
-	model_mat_cpp = mvstack.pop();
-}
-#pragma endregion
-//-----ve window------
-#pragma region window
-void windown(float tmp) {
-
-	mvstack.push(model_mat_cpp);
-
-	//khung tren
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0.0, 0.275, 0.0)) * scale(vec3(0.05, 0.05, 0.6));
-	setInt("color", 1);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//kinh
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0.0, 0.25, 0.0)) * rotate_z(tmp) * translate(vec3(0.0, -0.25, 0.0)) * scale(vec3(0.02, 0.5, 0.5));
-	setInt("color", 9);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//khung duoi
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0.0, -0.275, 0.0)) * scale(vec3(0.05, 0.05, 0.6));
-	setInt("color", 1);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//khung phai 
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0.0, 0.0, 0.275)) * scale(vec3(0.05, 0.5, 0.05));
-	setInt("color", 1);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//khung trai
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0.0, 0.0, -0.275)) * scale(vec3(0.05, 0.5, 0.05));
-	setInt("color", 1);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//tay nam
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0.0, 0.25, 0.0)) * rotate_z(tmp) * translate(vec3(0.0, -0.25, 0.0)) * translate(vec3(0.02, -0.15, 0.0)) * scale(vec3(0.02, 0.02, 0.1));
-	setInt("color", 1);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	model_mat_cpp = mvstack.pop();
-}
-void windowns(float tx, float ty, float tz, float sx, float sy, float sz, float tmp, int j) {
-
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(tx, ty, tz)) * scale(vec3(sx, sy, sz)) * rotate_y(360 / j);
-	windown(tmp);
-	model_mat_cpp = mvstack.pop();
-}
-#pragma endregion
-//-------ve board---------
-#pragma region board
-void board() {
-	mvstack.push(model_mat_cpp);
-	//mat bang
-	setInt("color", 2);
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * scale(vec3(0.9, 0.6, 0.05));
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//khung tren
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0.0, 0.325, 0.02)) * scale(vec3(1.0, 0.05, 0.09));
-	setInt("color", 1);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//khung duoi
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0.0, -0.325, 0.02)) * scale(vec3(1.0, 0.05, 0.09));
-	setInt("color", 1);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//khung phai
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0.475, 0.0, 0.02)) * scale(vec3(0.05, 0.6, 0.09));
-	setInt("color", 1);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//khung trai
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(-0.475, 0.0, 0.02)) * scale(vec3(0.05, 0.6, 0.09));
-	setInt("color", 1);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	model_mat_cpp = mvstack.pop();
-}
-#pragma endregion
-//------ve chair----------
-#pragma region chair
-void chair() {
-	mvstack.push(model_mat_cpp);
-	//mat ghe
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * scale(vec3(0.6, 0.05, 0.6));
-	setInt("color", 1);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//chong tua trai
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(-0.275, 0.325, -0.275)) * scale(vec3(0.05, 0.6, 0.05));
-	setInt("color", 2);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//chong tua phai
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0.275, 0.325, -0.275)) * scale(vec3(0.05, 0.6, 0.05));
-	setInt("color", 2);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//tua
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0.0, 0.45, -0.275)) * scale(vec3(0.5, 0.3, 0.02));
-	setInt("color", 1);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//chan phai tren
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0.275, -0.325, 0.275)) * scale(vec3(0.05, 0.6, 0.05));
-	setInt("color", 2);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//chan trai tren
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(-0.275, -0.325, 0.275)) * scale(vec3(0.05, 0.6, 0.05));
-	setInt("color", 2);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//chan phai duoi
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0.275, -0.325, -0.275)) * scale(vec3(0.05, 0.6, 0.05));
-	setInt("color", 2);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	//chan trai duoi
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(-0.275, -0.325, -0.275)) * scale(vec3(0.05, 0.6, 0.05));
-	setInt("color", 2);
-	cube();
-	model_mat_cpp = mvstack.pop();
-	model_mat_cpp = mvstack.pop();
-}
-#pragma endregion
-//------------------
-void boards(float tx, float ty, float tz, float sx, float sy, float sz) {
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(tx, ty, tz)) * scale(vec3(sx, sy, sz));
-	board();
-	model_mat_cpp = mvstack.pop();
-}
-void chairs(float tx, float ty, float tz, float sx, float sy, float sz, float tmp, int j) {
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(tmp, 0.0, 0.0)) * translate(vec3(tx, ty, tz)) * scale(vec3(sx, sy, sz)) * rotate_y(360 / j);
-	chair();
-	model_mat_cpp = mvstack.pop();
-}
 //-------ve camera-------------
 #pragma region camera
 bool switch_camera = false;
@@ -1124,348 +776,6 @@ void cameras(float tx, float ty, float tz, float sx, float sy, float sz) {
 	model_mat_cpp = mvstack.pop();
 }
 #pragma endregion
-//---------ve dong ho-----------
-#pragma region clock
-float hour_angle = 0.0f;
-float min_angle = 15.0f;
-namespace dongho {
-	void mat() {
-		mvstack.push(model_mat_cpp);
-		setInt("color", 98);
-		model_mat_cpp = model_mat_cpp * scale(vec3(1, 1, 0.1));
-		cube();
-		model_mat_cpp = mvstack.pop();
-	}
-
-	void vien() {
-		mvstack.push(model_mat_cpp);
-		setInt("color", 1);
-		model_mat_cpp = model_mat_cpp * scale(vec3(0.1, 1, 0.1));
-		cube();
-		model_mat_cpp = mvstack.pop();
-	}
-
-	void hour_index() {
-		mvstack.push(model_mat_cpp);
-		setInt("color", 99);
-		model_mat_cpp = model_mat_cpp * scale(vec3(0.02, 0.06, 0.01));
-		cube();
-		model_mat_cpp = mvstack.pop();
-	}
-
-	void truc() {
-		mvstack.push(model_mat_cpp);
-		setInt("color", 99);
-		model_mat_cpp = model_mat_cpp * scale(vec3(0.06, 0.06, 0.12));
-		cube();
-		model_mat_cpp = mvstack.pop();
-	}
-
-	void kim() {
-		mvstack.push(model_mat_cpp);
-		setInt("color", 3);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0, 0.11, 0.08)) * scale(vec3(0.02, 0.25, 0.02));
-		cube();
-		model_mat_cpp = mvstack.pop();
-	}
-
-	void vedongho(float tx, float ty, float tz, float sx, float sy, float sz) {
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(tx, ty, tz)) * scale(vec3(sx, sy, sz));
-
-		mvstack.push(model_mat_cpp);
-		dongho::mat();
-		model_mat_cpp = mvstack.pop();
-
-		//ve vien 1
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0.45, 0, 0.05));
-		dongho::vien();
-		model_mat_cpp = mvstack.pop();
-
-		//ve vien 2
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(-0.45, 0, 0.05));
-		dongho::vien();
-		model_mat_cpp = mvstack.pop();
-
-		//ve vien 3
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0, 0.45, 0.05)) * rotate_y(90) * rotate_x(90);
-		dongho::vien();
-		model_mat_cpp = mvstack.pop();
-
-		//ve vien 4
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0, -0.45, 0.05)) * rotate_y(90) * rotate_x(90);
-		dongho::vien();
-		model_mat_cpp = mvstack.pop();
-
-		//index
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0, 0.34, 0.06));
-		dongho::hour_index();
-		model_mat_cpp = mvstack.pop();
-
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0.34, 0, 0.06)) * rotate_z(90);
-		dongho::hour_index();
-		model_mat_cpp = mvstack.pop();
-
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(-0.34, 0, 0.06)) * rotate_z(-90);
-		dongho::hour_index();
-		model_mat_cpp = mvstack.pop();
-
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0, -0.34, 0.06));
-		dongho::hour_index();
-		model_mat_cpp = mvstack.pop();
-
-		//truc
-		dongho::truc();
-
-		//kim gio
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * rotate_z(hour_angle) * scale(vec3(1.4, 1, 1));
-		dongho::kim();
-		model_mat_cpp = mvstack.pop();
-
-		//kim phut
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * rotate_z(min_angle) * scale(vec3(1, 1.4, 1));
-		dongho::kim();
-		model_mat_cpp = mvstack.pop();
-
-		model_mat_cpp = mvstack.pop();
-	}
-}
-#pragma endregion
-//--------ve tu------------
-#pragma region Ve cai tu
-
-#define chieucaotu 1.0
-#define chieungangtu 0.6
-#define chieurongtu 0.4
-#define dodaytu 0.01
-
-namespace tu {
-	void san() {
-		mvstack.push(model_mat_cpp);
-		setInt("color", 1);
-		model_mat_cpp = model_mat_cpp * scale(vec3(chieungangtu, dodaytu, chieurongtu));
-		cube();
-		model_mat_cpp = mvstack.pop();
-	}
-	void canhbentu()
-	{
-		mvstack.push(model_mat_cpp);
-		setInt("color", 1);
-		model_mat_cpp = model_mat_cpp * scale(vec3(dodaytu, chieucaotu, chieurongtu));
-		cube();
-		model_mat_cpp = mvstack.pop();
-	}
-	void matlungtu()
-	{
-		mvstack.push(model_mat_cpp);
-		setInt("color", 1);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0, chieucaotu / 2.0, -chieurongtu / 2.0)) * scale(vec3(chieungangtu, chieucaotu, dodaytu));
-		cube();
-		model_mat_cpp = mvstack.pop();
-	}
-	void canhtu()
-	{
-		mvstack.push(model_mat_cpp);
-		setInt("color", 1);
-		model_mat_cpp = model_mat_cpp * scale(vec3(chieungangtu / 2.0, chieucaotu, dodaytu));
-		cube();
-		model_mat_cpp = mvstack.pop();
-		mvstack.push(model_mat_cpp);
-		setInt("color", 12);
-		model_mat_cpp = model_mat_cpp * scale(vec3(chieungangtu / 2.0 - 0.04, chieucaotu - 0.03, dodaytu)) * translate(vec3(0, 0, 0.01));
-		cube();
-		model_mat_cpp = mvstack.pop();
-	}
-	void vetu()
-	{
-		mvstack.push(model_mat_cpp);
-		//noctu
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(0, chieucaotu, 0));
-		tu::san();
-		model_mat_cpp = mvstack.pop();
-		tu::san();
-		//ben trai tu
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(chieungangtu / 2.0, chieucaotu / 2.0, 0));
-		tu::canhbentu();
-		model_mat_cpp = mvstack.pop();
-		//ben phai tu
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp * translate(vec3(-chieungangtu / 2.0, chieucaotu / 2.0, 0));
-		tu::canhbentu();
-		model_mat_cpp = mvstack.pop();
-		//back cua tu
-		tu::matlungtu();
-		//tạo cánh tủ...
-
-		model_mat_cpp = mvstack.pop();
-
-
-	}
-}
-void draw_cabinet(float tx, float ty, float tz, float sx, float sy, float sz, GLfloat angle_canh1)
-{
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(tx, ty, tz)) * scale(vec3(sx, sy, sz));
-	tu::vetu();
-	//canh tu 1-canh trai
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0.3, 0.5, 0.2)) * rotate_y(angle_canh1) * translate(vec3(-0.15, 0, 0));
-	tu::canhtu();
-	model_mat_cpp = mvstack.pop();
-	// canh tu 2-canh phai
-	GLfloat angle_canh2 = angle_canh1 * (-1);
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(-0.3, 0.5, 0.2)) * rotate_y(angle_canh2) * translate(vec3(0.15, 0, 0));
-	tu::canhtu();
-	model_mat_cpp = mvstack.pop();
-
-	model_mat_cpp = mvstack.pop();
-}
-#pragma endregion
-//----------ve ban hoc----------
-#pragma region Ve cai ban
-
-#define chieucaoban 0.7
-#define chieudaimat 1
-#define chieurongmat 0.6
-#define dodaymatban 0.01
-#define dodaychanban 0.05
-#define chieudaingan 0.8
-#define chieurongngan 0.4
-#define chieucaongan 0.5
-
-namespace banhoc {
-	void matban()
-	{
-		mvstack.push(model_mat_cpp);
-		setInt("color", 1);
-		mat4 instance = identity_mat4();
-		instance = translate(vec3(0.0, chieucaoban, chieurongmat / 2.0)) *
-			scale(vec3(chieudaimat, dodaymatban, chieurongmat));
-
-		mat4 model_torso = model_mat_cpp * instance;
-
-		glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_torso.m);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		model_mat_cpp = mvstack.pop();
-	}
-
-	void chanban()
-	{
-		mvstack.push(model_mat_cpp);
-		setInt("color", 2);
-		mat4 instance = identity_mat4();
-		instance = translate(vec3(0, chieucaoban / 2.0, 0)) * scale(vec3(dodaychanban, chieucaoban, dodaychanban));
-
-		mat4 model_left_upper_arm = model_mat_cpp * instance;
-
-		glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_left_upper_arm.m);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		model_mat_cpp = mvstack.pop();
-	}
-
-	void nganban()
-	{
-		mvstack.push(model_mat_cpp);
-		setInt("color", 1);
-		mat4 instance = identity_mat4();
-		/*instance = translate(vec3(0, chieucaongan, chieurongmat / 2.0)) * scale(vec3(chieudaimat - (dodaychanban * 2.0), dodaymatban, chieurongmat - (dodaychanban * 2.0)));*/
-		instance = translate(vec3(0, chieucaongan - 1, chieurongmat / 2.0)) * scale(vec3(chieudaimat - (dodaychanban * 2.0), dodaymatban, chieurongmat - (dodaychanban * 2.0)));
-		mat4 model_torso = model_mat_cpp * instance;
-
-		glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_torso.m);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		model_mat_cpp = mvstack.pop();
-	}
-
-	void tamchanban() {
-		mvstack.push(model_mat_cpp);
-		setInt("color", 1);
-		mat4 instance = identity_mat4();
-		instance = translate(vec3(0, chieucaoban - 0.14, chieurongmat / 2 - 0.3)) * scale(vec3(chieudaimat - (dodaychanban * 2.0) - 0.05, 0.15, dodaymatban));
-
-		mat4 model_torso = model_mat_cpp * instance;
-
-		glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_torso.m);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		model_mat_cpp = mvstack.pop();
-	}
-	void veban() {
-		mvstack.push(model_mat_cpp);
-		//model_mat_cpp = model_mat_cpp * translate(vec3(T_ban[0], 0, 0)) * translate(vec3(0, T_ban[1], 0)) * translate(vec3(0, 0, T_ban[2])) * translate(vec3(0, -1, 0));
-		model_mat_cpp = model_mat_cpp * translate(vec3(0, -1, 0));
-		// matban
-		banhoc::matban();
-
-		// Chan ban 1
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp *
-			translate(vec3(-chieudaimat / 2.0 + dodaychanban, 0, dodaychanban));
-		banhoc::chanban();
-		model_mat_cpp = mvstack.pop();
-
-		// chan ban 2
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp *
-			translate(vec3(-chieudaimat / 2.0 + dodaychanban, 0, chieurongmat - dodaychanban));
-		banhoc::chanban();
-		model_mat_cpp = mvstack.pop();
-
-		// Chan ban 3
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp *
-			translate(vec3(chieudaimat / 2.0 - dodaychanban, 0, dodaychanban));
-		banhoc::chanban();
-		model_mat_cpp = mvstack.pop();
-
-		// chan ban 4
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp *
-			translate(vec3(chieudaimat / 2.0 - dodaychanban, 0, chieurongmat - dodaychanban));
-		banhoc::chanban();
-		model_mat_cpp = mvstack.pop();
-
-		//tam chan ban
-		mvstack.push(model_mat_cpp);
-		model_mat_cpp = model_mat_cpp *
-			translate(vec3());
-		banhoc::tamchanban();
-		model_mat_cpp = mvstack.pop();
-
-		model_mat_cpp = mvstack.pop();
-	}
-}
-
-void vebanhoc(float tx, float ty, float tz, float sx, float sy, float sz, GLfloat ngankeo) {
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(tx, ty, tz)) * scale(vec3(sx, sy, sz));
-	banhoc::veban();
-
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(0, 0, ngankeo));
-	banhoc::nganban();
-	model_mat_cpp = mvstack.pop();
-
-	model_mat_cpp = mvstack.pop();
-}
-
-
 void light() {
 	mvstack.push(model_mat_cpp);
 	//bong
@@ -1497,7 +807,7 @@ void light() {
 
 void lights(float tx, float ty, float tz, float sx, float sy, float sz, int tmp) {
 	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(tx, ty, tz)) * scale(vec3(sx, sy, sz)) * rotate_z(90.0f*tmp);
+	model_mat_cpp = model_mat_cpp * translate(vec3(tx, ty, tz)) * scale(vec3(sx, sy, sz)) * rotate_z(90.0f * tmp);
 	light();
 	model_mat_cpp = mvstack.pop();
 }
@@ -1557,79 +867,7 @@ void DisplayFunc(void)
 	door();
 	projectors(0.0, 2.27, -5.0, 0.3, 0.15, 0.3, projector_angle);
 	animation_la_x = amplitude * sin(frequency * timeElapsed);
-	//draw tree
-	tree_real(7, -1.05, -1, 0.7, 0.7, 0.7);
-	tree_real(-7, -1.05, -1, 0.7, 0.7, 0.7);
-	tree_real(7, -1.05, -4, 0.7, 0.7, 0.7);
-	tree_real(-7, -1.05, -4, 0.7, 0.7, 0.7);
-
-
-	//ve ban giao vien
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(chair_tablex[table0], 0.1f, -5.5f)) * rotate_y(180);
-	vebanhoc(-1.2, 0, 0, 1.2, 1.2, 0.8, ngankeo_z[ngankeo0]);
-	model_mat_cpp = mvstack.pop();
-
-	////ve ban hoc
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(chair_tablex[table1], 0, 0));
-	vebanhoc(-1.2f, 0.0f, -4.0f, 1, 1, 0.4, ngankeo_z[ngankeo1]);
-	model_mat_cpp = mvstack.pop();
-
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(chair_tablex[table2], 0, 0));
-	vebanhoc(-1.2f, 0.0f, -3.2f, 1, 1, 0.4, ngankeo_z[ngankeo2]);
-	model_mat_cpp = mvstack.pop();
-
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(chair_tablex[table3], 0, 0));
-	vebanhoc(-1.2f, 0.0f, -2.4f, 1, 1, 0.4, ngankeo_z[ngankeo3]);
-	model_mat_cpp = mvstack.pop();
-
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(chair_tablex[table4], 0, 0));
-	vebanhoc(-1.2f, 0.0f, -1.6f, 1, 1, 0.4, ngankeo_z[ngankeo4]);
-	model_mat_cpp = mvstack.pop();
-
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(chair_tablex[table5], 0, 0));
-	vebanhoc(1.2f, 0.0f, -4.0f, 1, 1, 0.4, ngankeo_z[ngankeo5]);
-	model_mat_cpp = mvstack.pop();
-
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(chair_tablex[table6], 0, 0));
-	vebanhoc(1.2f, 0.0f, -3.2f, 1, 1, 0.4, ngankeo_z[ngankeo6]);
-	model_mat_cpp = mvstack.pop();
-
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(chair_tablex[table7], 0, 0));
-	vebanhoc(1.2f, 0.0f, -2.4f, 1, 1, 0.4, ngankeo_z[ngankeo7]);
-	model_mat_cpp = mvstack.pop();
-
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(chair_tablex[table8], 0, 0));
-	vebanhoc(1.2f, 0.0f, -1.6f, 1, 1, 0.4, ngankeo_z[ngankeo8]);
-	model_mat_cpp = mvstack.pop();
-
-
-	//--------------------------ve tu do---------------------
-	//ve tu 1
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(-2.2, -chieucaotu, -7 + chieurongtu / 2.0 + 0.3)) * rotate_y(90);
-	draw_cabinet(0, 0, 0, 1.5, 1.5, 0.8, angle_canhtu[tu1]);
-	model_mat_cpp = mvstack.pop();
-	//ve tu 2
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(-2, -chieucaotu, -0.2)) * rotate_y(180);
-	draw_cabinet(0, 0, -0, 1.5, 1.5, 0.8, angle_canhtu[tu2]);
-	model_mat_cpp = mvstack.pop();
-	//ve tu 3
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(2, -chieucaotu, -0.2)) * rotate_y(180);
-	draw_cabinet(0, 0, -0, 1.5, 1.5, 0.8, angle_canhtu[tu3]);
-	model_mat_cpp = mvstack.pop();
-
-		//fan ben trai
+	//fan ben trai
 	mvstack.push(model_mat_cpp);
 	model_mat_cpp = model_mat_cpp * translate(vec3(1.25, 2.95, -3.5));
 	fan::ceiling_fan();
@@ -1639,46 +877,14 @@ void DisplayFunc(void)
 	model_mat_cpp = model_mat_cpp * translate(vec3(-1.25, 2.95, -3.5));
 	fan::ceiling_fan();
 	//conditioner1
-	model_mat_cpp = mvstack.pop();
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(-2.3, 2.55, -5));
-	conditioner();
-	model_mat_cpp = mvstack.pop();
-	//conditioner2
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3(-2.3, 2.55, -1));
-	conditioner();
-	model_mat_cpp = mvstack.pop();
-
 	lights(13.5, 1.15, -2.6, 4.5, 1.2, 1.9, 1);
 	lights(-1.0, 2.07, -4.0, 1, 1, 1, 2);
 	lights(1.0, -3.95, -4.0, 1, 1, 1, 4);
-	windowns(-2.5, 0.975, -5.5, 0.95, 1.6, 1.65, windown_rotate[windown1], 1);
-	windowns(-2.5, 0.975, -3.5, 0.95, 1.6, 1.65, windown_rotate[windown2], 1);
-	windowns(-2.5, 0.975, -1.5, 0.95, 1.6, 1.65, windown_rotate[windown3], 1);
-	windowns(2.5, 0.975, -5.5, 0.95, 1.6, 1.65, windown_rotate[windown4], 2);
-	windowns(2.5, 0.975, -3.5, 0.95, 1.6, 1.65, windown_rotate[windown5], 2);
-	windowns(2.5, 0.975, -1.5, 0.95, 1.6, 1.65, windown_rotate[windown6], 2);
-	boards(0.0, 1.0, -6.5, 3.0, 2.0, 1.0);
-	chairs(1.2f, -0.5f, -6.1f, 0.9, 0.8, 0.4, chair_tablex[chair0], 1);
-	chairs(-1.2f, -0.5f, -3.5f, 1, 0.8, 0.4, chair_tablex[chair1], 2);
-	chairs(-1.2f, -0.5f, -2.8f, 1, 0.8, 0.4, chair_tablex[chair2], 2);
-	chairs(-1.2f, -0.5f, -1.9f, 1, 0.8, 0.4, chair_tablex[chair3], 2);
-	chairs(-1.2f, -0.5f, -1.1f, 1, 0.8, 0.4, chair_tablex[chair4], 2);
-	chairs(1.2f, -0.5f, -3.5f, 1, 0.8, 0.4, chair_tablex[chair5], 2);
-	chairs(1.2f, -0.5f, -2.8f, 1, 0.8, 0.4, chair_tablex[chair6], 2);
-	chairs(1.2f, -0.5f, -1.9f, 1, 0.8, 0.4, chair_tablex[chair7], 2);
-	chairs(1.2f, -0.5f, -1.1f, 1, 0.8, 0.4, chair_tablex[chair8], 2);
 
 	//camera
 	cameras(2.2, 2.8, -6.95, 1.0, 1.0, 1.0);
 
-	//ve dong ho
-	mvstack.push(model_mat_cpp);
-	model_mat_cpp = model_mat_cpp * translate(vec3()) * scale(vec3(0.4, 0.4, 0.4)) * rotate_y(180);
-	dongho::vedongho(0, 4.5, 0.2, 1, 1, 1);
-	model_mat_cpp = mvstack.pop();
-	
+
 	glutSwapBuffers();
 }
 //---các hàm cho cam-----------
@@ -1760,16 +966,6 @@ void IdleFunc(void)
 		offl2();
 		glutPostRedisplay();
 	}
-	//gió giật cấp 1=> rung cây
-	if (_switch_la) {
-		timeElapsed += 0.01f;
-		if (timeElapsed > 4) { timeElapsed = 0; }
-		glutPostRedisplay();
-	}
-	else {
-		glutPostRedisplay();
-	}
-
 	//quat tran
 	if (_switch_fan) {
 		Alpha += 5.0f;
@@ -1779,20 +975,6 @@ void IdleFunc(void)
 		glutPostRedisplay();
 	}
 	else {
-		glutPostRedisplay();
-	}
-	//conditioner
-	if (_switch_con) {
-		angle_conditioner -= 0.005f;
-		if (angle_conditioner < -95.0f) {
-			angle_conditioner = -95.0f;
-		}
-		glutPostRedisplay();
-	}
-	else {
-		angle_conditioner += 0.005f;
-		if (angle_conditioner > -50.0f)
-			angle_conditioner = -50.0f;
 		glutPostRedisplay();
 	}
 	///////////////////////////// camera
@@ -1815,15 +997,6 @@ void IdleFunc(void)
 		}
 		glutPostRedisplay();
 	}
-	//clock
-	hour_angle += 0.002; // Tăng góc lên 5 độ mỗi lần gọi hàm
-	if (hour_angle >= 360) {
-		hour_angle = 0; // Nếu góc lớn hơn hoặc bằng 360 độ, đặt lại về 0 độ
-	}
-	min_angle += 0.006;
-	if (min_angle >= 360) {
-		min_angle = 0;
-	}
 	glutPostRedisplay();
 }
 // ------------------------------------------
@@ -1833,7 +1006,7 @@ void KeyboardFunc(unsigned char key, int x, int y)
 	case 27:
 		glutLeaveMainLoop();
 		break;
-	//----camera------------
+		//----camera------------
 	case 'w':
 		cameraX += sin(yaw) * moveSpeed;
 		cameraZ -= cos(yaw) * moveSpeed;
@@ -1857,7 +1030,7 @@ void KeyboardFunc(unsigned char key, int x, int y)
 		}
 		keys[key] = true;
 		break;
-	//-----light---
+		//-----light---
 	case 'C':
 	case 'c'://on/off light1
 		if (phim1) phim1 = false;
@@ -1945,40 +1118,6 @@ void KeyboardFunc(unsigned char key, int x, int y)
 			_switch_fan = true;
 			break;
 		}
-	case '1':// bật điều hòa
-		if (_switch_con) {
-			_switch_con = false;
-			break;
-		}
-		else {
-			_switch_con = true;
-			break;
-		}
-		break;
-	case '/'://mở cửa
-		door_angle -= 2.0f;
-		if (door_angle <= -175) door_angle = -175;
-		break;
-	case '?'://đóng cửa
-		door_angle += 2.0f;
-		if (door_angle >= 0) door_angle = 0;
-		break;
-	case '8'://tinh tien ghe ban
-		chair_tablex[chair_table_x] += 0.1;
-		if (chair_tablex[chair_table_x] > 0.75) { chair_tablex[chair_table_x] = 0.75; }
-		break;
-	case '9':
-		chair_tablex[chair_table_x] -= 0.1;
-		if (chair_tablex[chair_table_x] < -0.7) { chair_tablex[chair_table_x] = -0.7; }
-		break;
-	case '6'://window
-		windown_rotate[rotate_windown] -= 1.5;
-		if (windown_rotate[rotate_windown] < -90.0) { windown_rotate[rotate_windown] = -90.0; }
-		break;
-	case '7'://window
-		windown_rotate[rotate_windown] += 1.5;
-		if (windown_rotate[rotate_windown] > 0.0) { windown_rotate[rotate_windown] = 0.0; }
-		break;
 		//// camera//////////////////////////////////////
 	case '2':
 		if (switch_camera) {
@@ -1998,44 +1137,11 @@ void KeyboardFunc(unsigned char key, int x, int y)
 			switch_projector = true;
 			break;
 		}
-	case '4':
-		if (ngankeo_z[ngankeo] >= chieurongngan / 1.5) {
-			ngankeo_z[ngankeo] = 0.01f;
-		}
-		ngankeo_z[ngankeo] += 0.01f;
-		break;
-	case '5'://gió giật cấp 1, rung cây
-		if (_switch_la) {
-			_switch_la = false;
-			break;
-		}
-		else {
-			_switch_la = true;
-			break;
-		}
-	case 'n':
-		angle_canhtu[angle_tu_y] += 2.0f;
-		if (angle_canhtu[angle_tu_y] >= 85) angle_canhtu[angle_tu_y] = 85;
-		break;
-	case 'm':
-		angle_canhtu[angle_tu_y] -= 2.0f;
-		if (angle_canhtu[angle_tu_y] <= 0) angle_canhtu[angle_tu_y] = 0;
-		break;
-	
+
 	}
 }
 // ----------------------------------------
-void menu(int option)
-{
-	if (option == Quit) {
-		exit(EXIT_SUCCESS);
-	}
-	angle_tu_y = option;
-	chair_table_x = option;
-	ngankeo = option;
-	rotate_windown = option;
-}
-	// Xử lý phím đặc biệt
+// Xử lý phím đặc biệt
 void SpecialFunc(int key, int x, int y)
 {
 
@@ -2106,7 +1212,7 @@ int main(int argc, char* argv[])
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 	glutInitWindowSize(CurrentWidth, CurrentHeight);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutCreateWindow("khai");
+	glutCreateWindow("THuong");
 
 	glewExperimental = GL_TRUE;
 	glewInit();
@@ -2123,64 +1229,6 @@ int main(int argc, char* argv[])
 	glutKeyboardUpFunc(handleKeyRelease);//camera
 	glutCloseFunc(CloseFunc);
 
-	// Create chair submenu
-	int chairMenu = glutCreateMenu(menu);
-	glutAddMenuEntry("Chair Giao Vien", chair0);
-	glutAddMenuEntry("Chair 1", chair1);
-	glutAddMenuEntry("Chair 2", chair2);
-	glutAddMenuEntry("Chair 3", chair3);
-	glutAddMenuEntry("Chair 4", chair4);
-	glutAddMenuEntry("Chair 5", chair5);
-	glutAddMenuEntry("Chair 6", chair6);
-	glutAddMenuEntry("Chair 7", chair7);
-	glutAddMenuEntry("Chair 8", chair8);
-
-	// Create table submenu
-	int tableMenu = glutCreateMenu(menu);
-	glutAddMenuEntry("Table Giao Vien", table0);
-	glutAddMenuEntry("Table 1", table1);
-	glutAddMenuEntry("Table 2", table2);
-	glutAddMenuEntry("Table 3", table3);
-	glutAddMenuEntry("Table 4", table4);
-	glutAddMenuEntry("Table 5", table5);
-	glutAddMenuEntry("Table 6", table6);
-	glutAddMenuEntry("Table 7", table7);
-	glutAddMenuEntry("Table 8", table8);
-
-	// Create drawer submenu
-	int drawerMenu = glutCreateMenu(menu);
-	glutAddMenuEntry("Ngan Ban GV", ngankeo0);
-	glutAddMenuEntry("Ngan Keo 1", ngankeo1);
-	glutAddMenuEntry("Ngan Keo 2", ngankeo2);
-	glutAddMenuEntry("Ngan Keo 3", ngankeo3);
-	glutAddMenuEntry("Ngan Keo 4", ngankeo4);
-	glutAddMenuEntry("Ngan Keo 5", ngankeo5);
-	glutAddMenuEntry("Ngan Keo 6", ngankeo6);
-	glutAddMenuEntry("Ngan Keo 7", ngankeo7);
-	glutAddMenuEntry("Ngan Keo 8", ngankeo8);
-
-	//create windown
-	int windownMenu = glutCreateMenu(menu);
-	glutAddMenuEntry("WINDOWN 1", windown1);
-	glutAddMenuEntry("WINDOWN 2", windown2);
-	glutAddMenuEntry("WINDOWN 3", windown3);
-	glutAddMenuEntry("WINDOWN 4", windown4);
-	glutAddMenuEntry("WINDOWN 5", windown5);
-	glutAddMenuEntry("WINDOWN 6", windown6);
-
-	// Create cabinet submenu
-	int cabinetMenu = glutCreateMenu(menu);
-	glutAddMenuEntry("Tu 1", tu1);
-	glutAddMenuEntry("Tu 2", tu2);
-	glutAddMenuEntry("Tu 3", tu3);
-
-	// Create the main menu and attach the submenus
-	int mainMenu = glutCreateMenu(menu);
-	glutAddSubMenu("Chairs", chairMenu);
-	glutAddSubMenu("Tables", tableMenu);
-	glutAddSubMenu("Drawers", drawerMenu);
-	glutAddSubMenu("Cabinets", cabinetMenu);
-	glutAddSubMenu("windown", windownMenu);
 	glutAddMenuEntry("Quit", Quit);
 
 	// Attach the menu to the middle mouse button
