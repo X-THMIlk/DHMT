@@ -636,6 +636,37 @@ void quat(float qx, float qy, float qz) {
 	model_mat_cpp = mvstack.pop();
 }
 #pragma endregion
+void drawSofa(float tx, float ty, float tz, float sx, float sy, float sz) {
+    mvstack.push(model_mat_cpp);
+    model_mat_cpp = model_mat_cpp * translate(vec3(tx, ty, tz)) * scale(vec3(sx, sy, sz));
+
+    // Draw the seat
+    setInt("color", 1); // Set color for the seat
+    model_mat_cpp = model_mat_cpp * translate(vec3(0, 0, 0)) * scale(vec3(1.5, 0.1, 0.7)); // Adjust size
+    cube(); // Draw the seat
+    model_mat_cpp = mvstack.pop();
+
+    // Draw the backrest
+    mvstack.push(model_mat_cpp);
+    model_mat_cpp = model_mat_cpp * translate(vec3(0, 0.5, -0.35)) * scale(vec3(1.5, 0.5, 0.1)); // Adjust size and position
+    setInt("color", 2); // Set color for the backrest
+    cube(); // Draw the backrest
+    model_mat_cpp = mvstack.pop();
+
+    // Draw the left armrest
+    mvstack.push(model_mat_cpp);
+    model_mat_cpp = model_mat_cpp * translate(vec3(-0.8, 0.25, 0)) * scale(vec3(0.1, 0.5, 0.7)); // Adjust size and position
+    setInt("color", 3); // Set color for the left armrest
+    cube(); // Draw the left armrest
+    model_mat_cpp = mvstack.pop();
+
+    // Draw the right armrest
+    mvstack.push(model_mat_cpp);
+    model_mat_cpp = model_mat_cpp * translate(vec3(0.8, 0.25, 0)) * scale(vec3(0.1, 0.5, 0.7)); // Adjust size and position
+    setInt("color", 3); // Set color for the right armrest
+    cube(); // Draw the right armrest
+    model_mat_cpp = mvstack.pop();
+}
 //==============================================================Hết tạo các đối tượng==============================
 //-------------------------------
 void DisplayFunc(void)
@@ -688,7 +719,7 @@ void DisplayFunc(void)
 	//-----------------draw------------------
 	room();
 	door();
-	//fan ben trai
+	drawSofa(0.0f, 0.0f, -5.0f, 1.0f, 1.0f, 1.0f);
 	lights(13.5, 1.15, -2.6, 4.5, 1.2, 1.9, 1);
 	quat(1.25,2.9,-3.5);
 	windowns(-2.5, 0.975, -5.5, 0.95, 1.6, 1.65, windown_rotate[windown1], 1);
