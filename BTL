@@ -635,10 +635,10 @@ void quat(float qx, float qy, float qz) {
 	fan::ceiling_fan();
 	model_mat_cpp = mvstack.pop();
 }
+GLfloat work_sofa = 0.0;
 #pragma endregion
-void drawSofa(float tx, float ty, float tz, float sx, float sy, float sz) {
+void drawSofa() {
     mvstack.push(model_mat_cpp);
-    model_mat_cpp = model_mat_cpp * translate(vec3(tx, ty, tz)) * scale(vec3(sx, sy, sz));
 
     // Draw the seat
     setInt("color", 1); // Set color for the seat
@@ -666,6 +666,12 @@ void drawSofa(float tx, float ty, float tz, float sx, float sy, float sz) {
     setInt("color", 3); // Set color for the right armrest
     cube(); // Draw the right armrest
     model_mat_cpp = mvstack.pop();
+}
+void sofa(float tx, float ty, float tz, float sx, float sy, float sz, int j) {
+	mvstack.push(model_mat_cpp);
+	model_mat_cpp = model_mat_cpp * translate(vec3(work_sofa, 0.0, work_sofa)) * translate(vec3(tx, ty, tz)) * scale(vec3(sx, sy, sz)) * rotate_y(360 / j);
+	drawSofa();
+	model_mat_cpp = mvstack.pop();
 }
 //==============================================================Hết tạo các đối tượng==============================
 //-------------------------------
@@ -951,6 +957,16 @@ void KeyboardFunc(unsigned char key, int x, int y)
 			switch_camera = true;
 			break;
 		}
+	case 'f':
+		if (work_sofa <= 1.6) {
+			work_sofa += 0.1;
+		}
+		break;
+	case 'r':
+		if (work_sofa >= -2.0) {
+			work_sofa -= 0.1;
+		}
+		break;
 	}
 }
 // ----------------------------------------
